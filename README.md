@@ -18,7 +18,9 @@ Now imagine a different scenario: you are developing a photo album application. 
 
 Semantic Service Contract and Discovery (SSCD) aims to provide a way to define, to discover and to consume services by semantic meanings. In the photo scenario above, you’ll be able to look for a service that can actually do face detection for you, not a service that is named “DetectingFaces” (with no guarantee that it will actual do anything related to face detection).
 
-## Goal
+The semantic service discovery can be conducted by a combination of functional and non-functional requirements. For example, SSCD allows discover services by SLA, performance benchmarks as well as billing methods and pricing details.
+
+## Goals
 
 The goal of this project is to define a series of components that enable semantic contract definition, discovery and consumption.
 
