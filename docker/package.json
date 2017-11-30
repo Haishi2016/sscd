@@ -1,0 +1,13 @@
+{
+	"name": "SSCD Server",
+	"version": "0.1.0",
+	"descripton": "this is a server for semantic service discovery",
+	"author": "Haishi Bai <hbai@microsoft.com>",
+	"main": "server.js",
+	"scripts": {
+		"start": "node server.js"
+	},
+	"dependencies": {
+		"express": "^4.13.3"
+	}
+}
