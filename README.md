@@ -18,9 +18,24 @@ Now imagine a different scenario: you are developing a photo album application. 
 
 Semantic Service Contract and Discovery (SSCD) aims to provide a way to define, to discover and to consume services by semantic meanings. In the photo scenario above, you’ll be able to look for a service that can actually do face detection for you, not a service that is named “DetectingFaces” (with no guarantee that it will actual do anything related to face detection).
 
-## Goal
+The semantic service discovery can be conducted by a combination of functional and non-functional requirements. For example, SSCD allows discover services by SLA, performance benchmarks as well as billing methods and pricing details. 
 
-The goal of this project is to define a series of components that enable semantic contract definition, discovery and consumption.
+## Goals
+
+The goal of this project is to define a series of components that enable semantic contract definition, discovery and consumption. Specifically:
+
+### Semantic contract goals
+* Semantic contracts shall feel natural to developers with minimum complexity.
+* Semantic contracts shall work with existing OOP primitives without interruptions. 
+* Semantic contracts shall not depend on a remote service to function.
+* Semantic contracts shall provide build-time supports when possible.
+
+### Semantic service discovery goals
+* Semantic service discovery shall work at both global scope and custom local scopes.
+* Semantic service discovery shall be simple to use. It should work on top of existing communication protocols.
+* Semantic service discovery shall be extensible without rigid central governance. 
+* Semantic service discovery shall work together with existing service discovery mechanisms. Semantic service discovery is meant for establishing connections to services. It supplies information to existing service discovery mechanisms to complete contract negotiation.  
+
 
 This project will provide several prototype implementations to validate key concepts, proposed language extensions and usage patterns. All implementations are governed by the same conceptual architecture. And the project aims at providing interoperability across different implementations.
 
