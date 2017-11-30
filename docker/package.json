@@ -1,5 +1,5 @@
 {
-	"name": "SSCD Server",
+	"name": "sscd-server",
 	"version": "0.1.0",
 	"descripton": "this is a server for semantic service discovery",
 	"author": "Haishi Bai <hbai@microsoft.com>",
