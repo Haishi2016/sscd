@@ -1,0 +1,14 @@
+{
+    "words":[
+        {
+            "id": "detection.data",
+            "type": "predicate",
+            "alias": ["detection", "detect"]
+        },
+        {
+            "id": "motion.data",
+            "type": "object",
+            "alias": ["motion", "motions"]
+        }
+    ]
+}
