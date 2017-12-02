@@ -1,0 +1,25 @@
+{
+    "services":[
+        {
+            "id":"hbai/skynet-edgedetection:1",
+            "type": "dokcer",
+            "uri": "hbai/skynet-edgedetection:1",
+            "contract-type": "semantic",
+            "contract-protocol": "HTTP",
+            "targets" :[
+                {
+                    "target": "camera.device"
+                },
+                {
+                    "target": "hard-drive.device"
+                }
+            ],
+            "intentions": [
+                {
+                    "predicate": "detection.data",
+                    "object": "motion.data"
+                }
+            ]
+        }
+    ]
+}
