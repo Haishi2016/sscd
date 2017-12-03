@@ -1,46 +1,80 @@
 # Semantic Service Contract and Discovery
 
-## Motivation
+Semantic Service Contract and Discovery (SSCD) provides a service discovery service that allows services be discovered by their logical functions, such as "order pizza" and "detect motion".
 
-Traditional service contracts define syntax of method invocation. Semantic Service Contract defines semantics of methods. Consider this case: as an API designer, you are designing a simple service contract for loan customer management. The interface allows add, update, remove customers as well as making loan approval decisions. It may look something like this:
-```c#
-public interface ICustomerManager
+In addition to functional requirements, the requester also can describe other non-funcitonal requirements such as SLA, pricing, publisher, region, and authentication constraints.
+
+SSCD offers two APIs: one to translate a natural language phrase into a structured *intent* object; another takes an *intent* object and returns a service description that can fullfill that intent. 
+
+SSDC embeds service registry in a container (hbai/skynet-sscd) so that service discovery can be performed without a centralized service. New service registry entries are taken in as GitHub pull requests, and are published to Docker Hub as a new image version through an auto-build pipeline.
+
+## Usage
+
+1. Launch SSCD server
+
+```bash
+
+sudo docker run -d -p 8181:8181 hbai/skynet-sscd:latest
+
+```
+2. Translate statement to intention (OPTIONAL)
+
+```bash
+
+GET http://localhost:8181?statement=detect%20motion
+
+```
+The request returns
+
+```json
 {
-    void Create(Customer newCustomer);
-    void Update(string id, Customer updatedCustomer);
-    void Delete(string id);
-    bool ShouldApprove(Customer customer, double loanAmount);
+    "predicate": "detection.data",
+    "object": "motion.data"
 }
 ```
-Although this interface tells your users how to call the methods, it captures no semantic meanings of these methods. The method name **suggests** what the method does, but it doesn’t **define** what the method should do. For example, what does **Create** mean? You can probably guess that this method is meant for creating a new Customer instance in some sort of data store. But, how do we explicit express this (and hopefully reinforce this, automatically)?
 
-Now imagine a different scenario: you are developing a photo album application. And you wish to call a service that can help you to detect faces on user-uploaded photos. How do you find such as service? The short answer is – you can’t. There are no known mechanisms for you to discover a service by functional requirements. The existing service discovery solutions allow you to discover how to consumer services. They don’t allow you to find a service that can deliver the functionality you need. 
+3. Discover a service
 
-Semantic Service Contract and Discovery (SSCD) aims to provide a way to define, to discover and to consume services by semantic meanings. In the photo scenario above, you’ll be able to look for a service that can actually do face detection for you, not a service that is named “DetectingFaces” (with no guarantee that it will actual do anything related to face detection).
+```bash
+POST http://localhost:8181/discover
 
-The semantic service discovery can be conducted by a combination of functional and non-functional requirements. For example, SSCD allows discover services by SLA, performance benchmarks as well as billing methods and pricing details. 
+BODY
 
-## Goals
+{
+    "predicate": "detection.data",
+    "object": "motion.data"
+}
 
-The goal of this project is to define a series of components that enable semantic contract definition, discovery and consumption. Specifically:
+```
 
-### Semantic contract goals
-* Semantic contracts shall feel natural to developers with minimum complexity.
-* Semantic contracts shall work with existing OOP primitives without interruptions. 
-* Semantic contracts shall not depend on a remote service to function.
-* Semantic contracts shall provide build-time supports when possible.
+the request returns
 
-### Semantic service discovery goals
-* Semantic service discovery shall work at both global scope and custom local scopes.
-* Semantic service discovery shall be simple to use. It should work on top of existing communication protocols.
-* Semantic service discovery shall be extensible without rigid central governance. 
-* Semantic service discovery shall work together with existing service discovery mechanisms. Semantic service discovery is meant for establishing connections to services. It supplies information to existing service discovery mechanisms to complete contract negotiation.  
+```json
+{
+    "id": "hbai/skynet-edgedetection:1",
+    "type": "dokcer",
+    "uri": "hbai/skynet-edgedetection:1",
+    "contract-type": "semantic",
+    "contract-protocol": "HTTP",
+    "targets":
+        [
+            {"target": "camera.device"},
+            {"target":"disk.device"}
+        ],
+    "intentions":
+        [
+            {"predicate": "detection.data",
+            "object": "motion.data"}
+        ]
+}
+```
 
+## Use Skynet
 
-This project will provide several prototype implementations to validate key concepts, proposed language extensions and usage patterns. All implementations are governed by the same conceptual architecture. And the project aims at providing interoperability across different implementations.
+The easiest to semantically discover and consume a service is to use a Skynet Hovercraft. 
 
-SSCD is designed specifically for semantic service definition and discovery. It’s **not** meant to model ontologies. SSCD leverages ontology languages such as OWL in some cases to express complex knowlege. 
-
-## What's Next?
-
-* Learn about key [Concepts](docs/Concepts.md).
+```python
+import skynet
+craft = skynet.launchHovercraft()
+craft.run("motion detection").on("/devices/video0").continuous()
+```
